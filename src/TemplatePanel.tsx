@@ -23,6 +23,11 @@ export class TemplatePanel extends PureComponent<Props> {
 
   render() {
     const {options, data} = this.props;
+
+    if (!data || !data.series) {
+      return null;
+    }
+
     return (
       <div style={{overflow: 'scroll'}}>
         {data.series.map((series, index) => {
