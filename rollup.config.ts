@@ -20,7 +20,15 @@ export default {
       sourcemap: true,
     },
   ],
-  external: ['jquery', 'lodash', 'moment', 'rxjs', 'react', 'react-dom', '@grafana/ui'],
+  external: [
+    'jquery', 
+    'lodash', 
+    'moment', 
+    'rxjs', 
+    'react', 
+    'react-dom', 
+    'handlebars', // Keep it external
+    '@grafana/ui'],
   watch: {
     include: 'src/**',
   },
@@ -32,7 +40,9 @@ export default {
     typescript({useTsconfigDeclarationDir: true}),
 
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs(),
+    commonjs({ 
+      ignore: ["conditional-runtime-dependency"] 
+    }),
 
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
@@ -46,7 +56,9 @@ export default {
     PRODUCTION && terser(),
 
     // Copy files
-    copy([{files: 'src/**/*.{json,svg,png,html}', dest: 'dist'}], {verbose: true}),
+    copy([
+      {files: 'src/**/*.{json,svg,png,html}', dest: 'dist'}, // images
+    ], {verbose: true}),
 
     // Help avoid including things accidentally
     visualizer({
